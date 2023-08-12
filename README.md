@@ -32,7 +32,7 @@ DocuQuery is a web application designed to revolutionize how users interact with
 - Running the App: Execute main.py to launch the application.
     - `python main.py`
 
-Usage:
+### Usage:
 
 If the application has a web interface, navigate to the provided localhost URL in your browser.
 Use the features provided by the application as per the documentation.
