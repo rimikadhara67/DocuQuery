@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DocuQuery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+    
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: #22222d;
+            color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+    
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1c1c25;
+            box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            margin-top: 50px;
+        }
+    
+        h1 {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #3e3e50;
+        }
+    
+        .form-group {
+            margin-bottom: 15px;
+            padding: 0 20px;
+        }
+    
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            color: #f4f4f4;
+        }
+    
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #2b2b3a;
+            border: 1px solid #1a1a2e;
+            color: #f4f4f4;
+            border-radius: 3px;
+        }
+    
+        .form-group button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #84a9da;
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+    
+        .form-group button:hover {
+            background-color: #17479a;
+        }
+    
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #1a1a2e;
+            background-color: #2b2b3a;
+            color: #f4f4f4;
+            border-radius: 3px;
+            margin: 20px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1>DocuQuery</h1>
+        <form id="upload-form" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file">Upload a PDF file:</label>
+                <input type="file" id="file" name="file" accept=".pdf">
+            </div>
+            <div class="form-group">
+                <button type="submit">Upload</button>
+            </div>
+        </form>
+        <form id="question-form">
+            <div class="form-group">
+                <label for="question">Ask a question:</label>
+                <textarea id="question" name="question" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <button type="submit">Ask</button>
+            </div>
+        </form>
+        <div id="result" class="result" style="display: none;"></div>
+    </div>
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var formData = new FormData(event.target);
+            fetch('/upload_pdf', {
+                method: 'POST',
+                body: formData
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                alert(data.message);
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
+        });
+        document.getElementById('question-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var question = document.getElementById('question').value;
+            fetch('/ask_question', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({question: question})
+            }).then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('result').textContent = 'Answer: ' + data.answer;
+            }).catch(function(error) {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
