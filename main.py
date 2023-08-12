@@ -8,8 +8,16 @@ from langchain.chains.question_answering import load_qa_chain
 from langchain.llms import OpenAI
 import os
 
-os.environ["OPENAI_API_KEY"] = "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"
+try:
+    from config import OPENAI_API_KEY
+except ImportError:
+    raise ImportError("Configuration file not found. Please set up config.py based on config_template.py.")
 
+# Directly use the OPENAI_API_KEY imported from config.py
+if OPENAI_API_KEY:
+    os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+else:
+    raise ValueError("OPENAI_API_KEY is not set in the config.py file.")
 
 app = Flask(__name__)
 
