@@ -31,6 +31,7 @@ DocuQuery is a web application designed to revolutionize how users interact with
     - Open config.py and replace 'your_api_key_here' with your actual OpenAI API key.
 - Running the App: Execute main.py to launch the application.
     - `python main.py`
+
 Usage:
 
 If the application has a web interface, navigate to the provided localhost URL in your browser.
